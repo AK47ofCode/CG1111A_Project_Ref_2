@@ -19,7 +19,7 @@
 #define FORWARD_TIME 700 // The time duration (ms) for turning
 #define MOVE_WAIT 50
 
-#define ULTRA_LOWER_RANGE 11.5 // in cm hihihi
+#define ULTRA_LOWER_RANGE 11.5 // in cm
 #define ULTRA_UPPER_RANGE 15.8 // in cm (max ~18cm)
 #define ULTRA_TARGET 10 //in cm
 #define kP_ULTRA 0.7
