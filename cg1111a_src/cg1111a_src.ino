@@ -15,19 +15,19 @@
 #define LDR_WAIT 10 //milliseconds
 
 // Movement
-#define TURNING_TIME 300 // The time duration (ms) for turning
+#define TURNING_TIME 280 // The time duration (ms) for turning
 #define FORWARD_TIME 705 // The time duration (ms) for turning
-#define MOVE_WAIT 25
+#define MOVE_WAIT 50
 
-#define ULTRA_LOWER_RANGE 11.5 // in cm
-#define ULTRA_UPPER_RANGE 14.3 // in cm (max ~18cm)
-#define ULTRA_TARGET 10 //in cm
-#define kP_ULTRA 0.7
-#define kD_ULTRA 3.1
+#define ULTRA_LOWER_RANGE 11.0 // in cm
+#define ULTRA_UPPER_RANGE 14.8 // in cm (max ~18cm)
+#define ULTRA_TARGET 10.0 //in cm
+#define kP_ULTRA 0.65
+#define kD_ULTRA 2.7
 int16_t prev_error_ultra = 0;
 
-#define IR_LIMIT 170 // value before the readings plateau
-#define IR_TARGET 140 // if the robot is too close, input will be higher than threshold
+#define IR_LIMIT 135 // value before the readings plateau
+#define IR_TARGET 120 // if the robot is too close, input will be higher than threshold
 #define kP_IR 1.6
 #define kD_IR 0.5
 int16_t prev_error_IR = 0;
@@ -49,9 +49,9 @@ int16_t prev_error_IR = 0;
 #define THRESHOLD 45
 
 //BLACK, WHITE, RED, GREEN, BLUE, ORANGE, PURPLE
-int16_t r_values[7] = {0, 275, 215, 111, 124, 245, 176};
-int16_t g_values[7] = {0, 640, 454, 511, 557, 514, 505};
-int16_t b_values[7] = {0, 595, 442, 457, 562, 452, 519};
+int16_t r_values[7] = {0, 292, 271, 145, 142, 296, 189};
+int16_t g_values[7] = {0, 652, 477, 536, 580, 541, 524};
+int16_t b_values[7] = {0, 607, 466, 485, 582, 485, 540};
 int16_t values[3] = {0, 0, 0};
 
 MeDCMotor leftMotor(M1); // Forward is -255
@@ -157,7 +157,7 @@ int16_t check_colour() { //k-NN algorithm
   for (int16_t i = 0; i < 3; i += 1) {
     toggle_led(i);
     delay(RGB_WAIT);
-    values[i] = getAvgReading(3);
+    values[i] = getAvgReading(5);
     delay(RGB_WAIT);
   }
   toggle_led(OFF_LED);  
@@ -283,8 +283,8 @@ void loop() {
   //Serial.println(analogRead(IR));
   //PID_IR();
   //check_colour();
+  //while(analogRead(A7) > 100){}
   //delay(5000);
-  
   if (lineFinder.readSensors() == S1_IN_S2_IN) {
     move(0, 0);
     mbot_led();
@@ -300,28 +300,28 @@ void loop() {
         break;
       case GREEN:
         mbot_led(0, 255, 0); 
-        move(255, -255, TURNING_TIME);
+        move(255, -255, TURNING_TIME + 30);
         move(0, 0, MOVE_WAIT);
         break;
       case BLUE:
         mbot_led(0, 0, 255); 
-        move(255, -255, TURNING_TIME + 45);
+        move(255, -255, TURNING_TIME + 35);
         move(0, 0, MOVE_WAIT);
-        move(255, 255, FORWARD_TIME + 40);
-        move(255, -255, TURNING_TIME + 105);
+        move(255, 255, FORWARD_TIME + 10);
+        move(255, -255, TURNING_TIME + 100);
         move(0, 0, MOVE_WAIT);
         break;
       case ORANGE:
         mbot_led(255, 165, 0); 
-        move(-255, 255, TURNING_TIME * 2 - 20);
+        move(-255, 255, TURNING_TIME * 2 + 50);
         move(0, 0, MOVE_WAIT);
         break;
       case PURPLE:
         mbot_led(128, 0, 128); 
-        move(-255, 255, TURNING_TIME);
+        move(-255, 255, TURNING_TIME + 30);
         move(0, 0, MOVE_WAIT);
         move(255, 255, FORWARD_TIME - 80);
-        move(-255, 255, TURNING_TIME + 115);
+        move(-255, 255, TURNING_TIME + 85);
         move(0, 0, MOVE_WAIT);
         break;
     }
@@ -330,6 +330,5 @@ void loop() {
   else {
     overall_movement();
   }
-  
   delay(10);
 }
