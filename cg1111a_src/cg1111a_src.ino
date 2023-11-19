@@ -393,7 +393,7 @@ void loop() {
         move(0, 0, MOVE_WAIT);
         break;
       case BLUE:
-        // Two successive left-turns in two grids
+        // Two successive right-turns in two grids
         mbot_led(0, 0, 255); 
         move(255, -255, TURNING_TIME + 35);
         move(0, 0, MOVE_WAIT);
@@ -408,7 +408,7 @@ void loop() {
         move(0, 0, MOVE_WAIT);
         break;
       case PURPLE:
-        // Two successive right-turns in two grids
+        // Two successive left-turns in two grids
         mbot_led(128, 0, 128); 
         move(-255, 255, TURNING_TIME + 30);
         move(0, 0, MOVE_WAIT);
