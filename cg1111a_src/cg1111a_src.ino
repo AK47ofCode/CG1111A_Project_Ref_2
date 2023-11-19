@@ -205,14 +205,6 @@ void PID_IR() {
 }
 
 /**
- * Set motor speed for each motor (left and right)
- *
- * @param[in] left Left motor speed
- * @param[in] right Right motor speed
- * @param[in] wait Set delay after assigning motor speed (in ms; default is 0ms)
- */
-
-/**
  * Calculates the average reading out of n measured readings using the LDR in the colour sensor
  *
  * @param[in] times The number of measured readings, n
@@ -355,9 +347,10 @@ void song() {
 
 /**
  * setup()
+ * set pinMode for all I/O pins, disable motors and all LEDs
+ * Wait for button press to star the robot (button is found on-board on the mCore)
  */
 void setup() {
-  Serial.begin(9600);
   led.setpin(13);
   pinMode(IR, INPUT);
   pinMode(LDR, INPUT);
@@ -367,7 +360,7 @@ void setup() {
   toggle_led(OFF_LED);
   mbot_led();
   move(0, 0);
-  while(analogRead(A7) > 100){} //wait for button press
+  while(analogRead(A7) > 100){} // wait for button press
 }
 
 /**
