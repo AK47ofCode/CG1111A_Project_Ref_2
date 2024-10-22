@@ -33,11 +33,11 @@
 #define TURNING_TIME 290 // The time duration (ms) for turning
 #define FORWARD_TIME 705 // The time duration (ms) for turning
 #define MOVE_WAIT 50
-#define ULTRA_LOWER_RANGE 10.5 // in cm
-#define ULTRA_UPPER_RANGE 14.8 // in cm; max ~18cm
-#define ULTRA_TARGET 10.0 // in cm; target value for PID (Ultrasonic Sensor)
-#define IR_LIMIT 205 // PID correction for IR triggers if analogRead(IR) <= IR_LIMIT
-#define IR_TARGET 175 // target value for PID (IR)
+#define ULTRA_LOWER_RANGE 12.5 // in cm
+#define ULTRA_UPPER_RANGE 15 // in cm; max ~18cm
+#define ULTRA_TARGET 12 // in cm; target value for PID (Ultrasonic Sensor)
+#define IR_LIMIT 200 // PID correction for IR triggers if analogRead(IR) <= IR_LIMIT
+#define IR_TARGET 180 // target value for PID (IR)
 
 /**
  * PID Constants / Variables
@@ -423,7 +423,7 @@ void loop() {
       case BLUE:
         // Two successive right-turns in two grids
         mbot_led(0, 0, 255); 
-        move(255, -255, TURNING_TIME + 45);
+        move(255, -255, TURNING_TIME + 65);
         move(0, 0, MOVE_WAIT);
         move(255, 255, FORWARD_TIME + 30);
         move(255, -255, TURNING_TIME + 120);
