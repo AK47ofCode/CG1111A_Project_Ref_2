@@ -30,7 +30,7 @@
 /**
  * Movement Constants
  */
-#define TURNING_TIME 280 // The time duration (ms) for turning
+#define TURNING_TIME 310 // The time duration (ms) for turning
 #define FORWARD_TIME 705 // The time duration (ms) for turning
 #define MOVE_WAIT 50
 #define ULTRA_LOWER_RANGE 10.5 // in cm
@@ -423,25 +423,25 @@ void loop() {
       case BLUE:
         // Two successive right-turns in two grids
         mbot_led(0, 0, 255); 
-        move(255, -255, TURNING_TIME + 35);
+        move(255, -255, TURNING_TIME + 45);
         move(0, 0, MOVE_WAIT);
         move(255, 255, FORWARD_TIME + 10);
-        move(255, -255, TURNING_TIME + 100);
+        move(255, -255, TURNING_TIME + 120);
         move(0, 0, MOVE_WAIT);
         break;
       case ORANGE:
         // 180° turn within the same grid
         mbot_led(255, 165, 0); 
-        move(-255, 255, TURNING_TIME * 2 + 50);
+        move(-255, 255, TURNING_TIME * 2);
         move(0, 0, MOVE_WAIT);
         break;
       case PURPLE:
         // Two successive left-turns in two grids
-        mbot_led(255, 189, 180); 
-        move(-255, 255, TURNING_TIME + 30);
+        mbot_led(230, 100, 100); 
+        move(-255, 255, TURNING_TIME + 45);
         move(0, 0, MOVE_WAIT);
-        move(255, 255, FORWARD_TIME - 80);
-        move(-255, 255, TURNING_TIME + 115);
+        move(255, 255, FORWARD_TIME - 70);
+        move(-255, 255, TURNING_TIME + 90);
         move(0, 0, MOVE_WAIT);
         break;
     }
