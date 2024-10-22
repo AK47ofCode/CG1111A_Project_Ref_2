@@ -33,11 +33,11 @@
 #define TURNING_TIME 280 // The time duration (ms) for turning
 #define FORWARD_TIME 705 // The time duration (ms) for turning
 #define MOVE_WAIT 50
-#define ULTRA_LOWER_RANGE 11.0 // in cm
+#define ULTRA_LOWER_RANGE 10.5 // in cm
 #define ULTRA_UPPER_RANGE 14.8 // in cm; max ~18cm
 #define ULTRA_TARGET 10.0 // in cm; target value for PID (Ultrasonic Sensor)
-#define IR_LIMIT 135 // PID correction for IR triggers if analogRead(IR) <= IR_LIMIT
-#define IR_TARGET 120 // target value for PID (IR)
+#define IR_LIMIT 200 // PID correction for IR triggers if analogRead(IR) <= IR_LIMIT
+#define IR_TARGET 180 // target value for PID (IR)
 
 /**
  * PID Constants / Variables
@@ -76,9 +76,9 @@ int16_t prev_error_IR = 0;
  * b_values[7] -> LDR measurements for red component of each colour
  * values[3] -> current RGB values
  */
-const int16_t r_values[7] = {0, 292, 271, 145, 142, 296, 189};
-const int16_t g_values[7] = {0, 652, 477, 536, 580, 541, 524};
-const int16_t b_values[7] = {0, 607, 466, 485, 582, 485, 540};
+const int16_t r_values[7] = {0, 309, 278, 167, 190, 297, 312};
+const int16_t g_values[7] = {0, 612, 434, 485, 533, 493, 564};
+const int16_t b_values[7] = {0, 557, 408, 411, 520, 421, 518};
 int16_t values[3] = {0, 0, 0};
 
 /**
@@ -346,6 +346,32 @@ void song() {
 }
 
 /**
+ * Calibration for sensors.
+ * Stops movement completely.
+ */
+void calibration(bool enable) {
+  if (enable) {
+    Serial.begin(9600);
+    while (1) {
+      Serial.print(ultra_read());
+      Serial.print(" ");
+      Serial.print(analogRead(IR));
+      Serial.print(" ");
+      for (int16_t i = 0; i < 3; i += 1) {
+        toggle_led(i);
+        delay(RGB_WAIT);
+        values[i] = getAvgReading(5);
+        Serial.print(values[i]);
+        Serial.print(" ");
+        delay(RGB_WAIT);
+      }
+      Serial.println("");
+      delay(50);
+    }
+  }
+}
+
+/**
  * setup()
  * set pinMode for all I/O pins, disable motors and all LEDs
  * Wait for button press to star the robot (button is found on-board on the mCore)
@@ -371,6 +397,8 @@ void setup() {
  * Else, it moves based on the overall movement algorithm.
  */
 void loop() {
+  calibration(false);
+
   if (lineFinder.readSensors() == S1_IN_S2_IN) {
     move(0, 0);
     mbot_led();
@@ -409,11 +437,11 @@ void loop() {
         break;
       case PURPLE:
         // Two successive left-turns in two grids
-        mbot_led(128, 0, 128); 
+        mbot_led(255, 189, 180); 
         move(-255, 255, TURNING_TIME + 30);
         move(0, 0, MOVE_WAIT);
         move(255, 255, FORWARD_TIME - 80);
-        move(-255, 255, TURNING_TIME + 85);
+        move(-255, 255, TURNING_TIME + 115);
         move(0, 0, MOVE_WAIT);
         break;
     }
